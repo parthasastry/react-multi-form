@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import Address from "./Address";
 import BasePrice from "./BasePrice";
-import ItemizedPrice from "./ItemizedPrice";
 
 const Form = () => {
-  const [page, setPage] = useState(0);
-  const [data, setData] = useState({
+  const initialState = {
     house_address_line_1: "",
     house_address_line_2: "",
     house_address_city: "",
@@ -19,13 +17,11 @@ const Form = () => {
     garage_amount_seller_comments: "",
     basement_amount: 0,
     basement_amount_seller_comments: "",
-  });
+  };
+  const [page, setPage] = useState(0);
+  const [data, setData] = useState(initialState);
 
-  const formTitles = [
-    "House Address to sell",
-    "Set Base Price",
-    "Set Itemized Price",
-  ];
+  const formTitles = ["House Address up for sale", "Set Base Price"];
 
   const PageDisplay = () => {
     switch (page) {
@@ -33,8 +29,7 @@ const Form = () => {
         return <Address data={data} setData={setData} />;
       case 1:
         return <BasePrice data={data} setData={setData} />;
-      case 2:
-        return <ItemizedPrice data={data} setData={setData} />;
+
       default:
         return null;
     }
@@ -42,16 +37,18 @@ const Form = () => {
 
   const handleSubmit = () => {
     console.log("formData: ", data);
+    setData(initialState);
   };
 
   return (
-    <div className="container w-full min-h-screen">
-      <div className="font-bold uppercase">{formTitles[page]}</div>
+    <div className="mb-6 text-center">
+      <div className="font-bold uppercase text-2xl">{formTitles[page]}</div>
       <div>{PageDisplay()}</div>
-      <div className="flex justify-between">
+      <div className="flex justify-between m-6">
         <div>
           {page === 0 ? null : (
             <button
+              className="w-48 h-8 border border-solid rounded-xl bg-gray-700 text-white"
               onClick={() => {
                 setPage((page) => page - 1);
               }}
@@ -63,9 +60,15 @@ const Form = () => {
 
         <div>
           {page === formTitles.length - 1 ? (
-            <button onClick={() => handleSubmit()}>Submit</button>
+            <button
+              className="w-48 h-8 border border-solid rounded-xl bg-blue-700 text-white"
+              onClick={() => handleSubmit()}
+            >
+              Submit
+            </button>
           ) : (
             <button
+              className="w-48 h-8 border border-solid rounded-xl bg-teal-700 text-white"
               onClick={() => {
                 setPage((page) => page + 1);
               }}
